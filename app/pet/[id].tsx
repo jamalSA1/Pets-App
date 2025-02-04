@@ -1,34 +1,27 @@
 import { useEffect, useState, useRef } from 'react';
 import { View, Text, Image, Dimensions, Modal, TouchableOpacity, Linking, Alert, Clipboard } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useLocalSearchParams, Stack } from 'expo-router';
+import { useLocalSearchParams, Stack, router } from 'expo-router';
 // @ts-ignore
 // import Carousel from 'react-native-snap-carousel';
 import { useQuery } from "convex/react";
 import { api } from "~/convex/_generated/api";
 import { Button } from '~/components/Button';
 
-type Pet = {
-  _id: string;
-  name: string;
-  species: string;
-  gender: string;
-  color: string;
-  age: number;
-  price: number;
-  description: string;
-  images: string[];
-  contact_number: string;
-};
-
 export default function PetDetails() {
   const { id } = useLocalSearchParams();
   const [loading, setLoading] = useState(true);
   const [showContact, setShowContact] = useState(false);
-  const carouselRef = useRef(null);
-  const screenWidth = Dimensions.get('window').width;
 
-  const pet = useQuery(api.pets.getById, { id: id.toString() });
+const pet = useQuery(api.pets.getById, typeof id === 'string' ? { id: id as string } : "skip");
+console.log(pet);
+
+
+const user = useQuery(
+  api.users.getUser, 
+  pet && pet.userId ? { id: pet.userId } : "skip"
+);
+
 
   useEffect(() => {
     if (pet) {
@@ -36,14 +29,13 @@ export default function PetDetails() {
     }
   }, [pet]);
 
-  const handleWhatsApp = () => {
-    if (pet && 'contact_number' in pet && pet.contact_number) {
-      // Format phone number: remove spaces, dashes, and ensure it starts with country code
-      const formattedNumber = pet.contact_number.replace(/[\s-]/g, '');
-      const phoneNumberWithCountry = formattedNumber.startsWith('+966') ? formattedNumber : `+${"966" + formattedNumber}`;
-      Linking.openURL(`whatsapp://send?phone=${phoneNumberWithCountry}`);
-    }
-  };
+    const handleWhatsApp = () => {
+      if (user && user.phoneNumber) {
+        const formattedNumber = user.phoneNumber.replace(/[\s-]/g, '');
+        const phoneNumberWithCountry = formattedNumber.startsWith('+966') ? formattedNumber : `+${"966" + formattedNumber}`;
+        Linking.openURL(`whatsapp://send?phone=${phoneNumberWithCountry}`);
+      }
+    };
 
   const renderCarouselItem = ({ item }: { item: string }) => (
     <Image
@@ -63,9 +55,10 @@ export default function PetDetails() {
 
   return (
     <>
-      <Stack.Screen options={{ headerShown: false }} />
       <View className="flex-row items-center justify-between px-4 pt-16 bg-white">
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => {
+          router.back();
+        }}>
           <MaterialIcons name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
         </View>
@@ -123,11 +116,11 @@ export default function PetDetails() {
             <View className="w-[80%] rounded-lg bg-white p-4">
               <Text className="text-lg font-semibold">Contact Information</Text>
               <View className="flex-row items-center">
-                <Text className="mt-2 flex-1">{"contact_number" in pet ? pet.contact_number: "Unknown"}</Text>
+                <Text className="mt-2 flex-1">{user && "phoneNumber" in user ? user.phoneNumber : "Unknown"}</Text>
                 <TouchableOpacity 
                   onPress={() => {
-                    if (pet && "contact_number" in pet) {
-                      Clipboard.setString(pet.contact_number);
+                    if (user && "phoneNumber" in user) {
+                      Clipboard.setString(user.phoneNumber);
                       Alert.alert("Success", "Phone number copied to clipboard");
                     }
                   }}

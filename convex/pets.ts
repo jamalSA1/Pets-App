@@ -1,11 +1,16 @@
 import { mutation, query } from "./_generated/server";
+import { v } from "convex/values";
 
 export const list = query(async (ctx) => {
   return await ctx.db.query("pets").collect();
 });
 
-export const getById = query(async (ctx, { id }: { id: string }) => {
-  return await ctx.db.get(id as any);
+export const getById = query({
+  args: { id: v.string() },
+  handler: async (ctx, args) => {
+    const petId = ctx.db.normalizeId("pets", args.id);
+    if (!petId) return null;
+  },
 });
 
 export const getUserPreference = query(async (ctx) => {

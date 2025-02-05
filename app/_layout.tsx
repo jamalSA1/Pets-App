@@ -1,11 +1,15 @@
-import { ConvexProvider, ConvexReactClient } from 'convex/react';
+import { ConvexReactClient } from 'convex/react';
 import { ClerkProvider, ClerkLoaded } from '@clerk/clerk-expo';
-import { Slot, Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import '../global.css';
 import { tokenCache } from '~/utils/cache';
+import { ConvexProviderWithClerk } from 'convex/react-clerk';
+import { useAuth } from '@clerk/clerk-react';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
-const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!);
+const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
+  unsavedChangesWarning: false,
+});
 
 if (!publishableKey) {
   throw new Error(
@@ -18,12 +22,14 @@ const InitialLayout = () => {
 };
 
 export default function Layout() {
+
+  
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <ClerkLoaded>
-        <ConvexProvider client={convex}>
+        <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
           <InitialLayout />
-        </ConvexProvider>
+        </ConvexProviderWithClerk>
       </ClerkLoaded>
     </ClerkProvider>
   );

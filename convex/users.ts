@@ -1,30 +1,20 @@
-import { mutation, query } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-export const createOrUpdateUser = mutation({
+export const createUser = mutation({
   args: {
-    email: v.string(),
-    phoneNumber: v.string(),
     clerkId: v.string(),
+    email: v.string(),
+    name: v.string(),
+    phoneNumber: v.string(),
   },
   handler: async (ctx, args) => {
-    const existingUser = await ctx.db
-      .query("users")
-      .first();
-
-    if (existingUser) {
-      return await ctx.db.patch(existingUser._id, {
-        email: args.email,
-        phoneNumber: args.phoneNumber,
-      });
-    }
-
-    return await ctx.db.insert("users", {
-      name: "",
-      email: args.email,
+    await ctx.db.insert("users", {
       clerkId: args.clerkId,
+      email: args.email,
+      name: args.name,
       phoneNumber: args.phoneNumber,
-      created_at: Date.now()
+      created_at: Date.now(),
     });
   },
 });
@@ -32,6 +22,8 @@ export const createOrUpdateUser = mutation({
 export const getUser = query({
   args: { email: v.string() },
   handler: async (ctx, args) => {
+    console.log('email: ', args.email);
+
     return await ctx.db
       .query("users")
       .filter(q => q.eq(q.field("email"), args.email))

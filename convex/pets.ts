@@ -34,3 +34,25 @@ export const setUserPreference = mutation(async (ctx) => {
     await ctx.db.insert("user_preferences", { has_seen_onboarding: true });
   }
 });
+
+export const create = mutation({
+  args: {
+    name: v.string(),
+    species: v.string(),
+    gender: v.string(),
+    color: v.string(),
+    age: v.number(),
+    price: v.number(),
+    description: v.string(),
+    images: v.array(v.string()),
+    image_url: v.string(),
+    video: v.string(),
+    userId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.insert("pets", {
+      ...args,
+      created_at: Date.now(),
+    });
+  },
+});

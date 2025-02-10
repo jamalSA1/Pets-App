@@ -9,11 +9,13 @@
       "output": "static",
       "favicon": "./assets/favicon.png"
     },
+    "newArchEnabled": true,
     "plugins": [
       [
         "expo-router"
       ],
-      "expo-build-properties"
+      "expo-build-properties",
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -31,12 +33,25 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ertari90.petsapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.ertari90.petsapp",
+      "permissions": [
+        "INTERNET"
+      ]
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3df968ab-e441-48ce-9f43-86e478790f09"
       }
     }
   }

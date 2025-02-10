@@ -13,6 +13,7 @@ export const getById = query({
   handler: async (ctx, args) => {
     const petId = ctx.db.normalizeId("pets", args.id);
     if (!petId) return null;
+    return await ctx.db.get(petId);
   },
 });
 
@@ -48,10 +49,21 @@ export const create = mutation({
     image_url: v.string(),
     video: v.string(),
     userId: v.string(),
+    storageId: v.optional(v.string()), // Add this line
   },
   handler: async (ctx, args) => {
+    // Get the storage URL if storageId is provided
+    let imageUrl = args.image_url;
+    if (args.storageId) {
+      const storageUrl = await ctx.storage.getUrl(args.storageId);
+      if (storageUrl) {
+        imageUrl = storageUrl;
+      }
+    }
+
     return await ctx.db.insert("pets", {
       ...args,
+      image_url: imageUrl,
       created_at: Date.now(),
     });
   },

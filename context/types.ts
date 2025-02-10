@@ -1,12 +1,16 @@
 import { ViewStyle } from "react-native";
 
-export type Pet = {
+export interface Pet {
   _id: string;
   name: string;
-  species: string;
-  image: string;
   price: number;
-};
+  image: string;
+  images?: string[];
+  image_url?: string;
+  video?: string;
+  created_at: number;
+  species: string;
+}
 
 export type RenderSkeletonProps = {
   imageHeight?: number;

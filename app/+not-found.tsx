@@ -7,7 +7,7 @@ import LottieView from 'lottie-react-native';
 
 export default function NotFoundScreen() {
   return (
-    <>
+    <View className='bg-white flex-1'>
     <View className="flex-row items-center justify-between ml-7 mt-14">
         <TouchableOpacity onPress={() => {
           router.back();
@@ -27,7 +27,7 @@ export default function NotFoundScreen() {
         </View>
         <Text className={styles.title}>الصفحة غير موجودة.</Text>
       </View>
-    </>
+    </View>
   );
 }
 

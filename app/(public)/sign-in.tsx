@@ -91,7 +91,7 @@ export default function Home() {
             <Ionicons name="logo-apple" size={32} color="#000" />
             <Text className="text-lg font-medium text-black">التسجيل من خلال ابل</Text>
           </TouchableOpacity>
-          <Link href="/(auth)/(tabs)/home" asChild>
+          <Link href="/(auth)/(tabs)" asChild>
             <Text className="text-center underline">الاستمرار بدون حساب</Text>
           </Link>
         </View>

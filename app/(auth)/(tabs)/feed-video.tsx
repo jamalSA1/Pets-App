@@ -55,7 +55,7 @@ const Page = () => {
         <TouchableOpacity 
           activeOpacity={1}
           onPress={() => togglePlay(item._id)}
-          className="w-full h-full"
+          className="w-full h-full bg-white"
         >
           <Video
             ref={(ref) => {

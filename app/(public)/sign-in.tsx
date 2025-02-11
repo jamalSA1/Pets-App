@@ -18,22 +18,7 @@ export default function Home() {
 
       if (createdSessionId) {
         await setActive!({ session: createdSessionId });
-      } else {
-        Alert.alert(
-          "تنبيه",
-          "لم يتم اكتمال عملية تسجيل الدخول، هل تريد المحاولة مرة أخرى؟",
-          [
-            {
-              text: "إلغاء",
-              style: "cancel"
-            },
-            {
-              text: "محاولة مرة أخرى",
-              onPress: () => handelGoogleLogin()
-            }
-          ]
-        );
-      }
+      } 
     } catch (err: any) {
       console.error("Login error:", err);
       Alert.alert(
@@ -48,22 +33,7 @@ export default function Home() {
 
       if (createdSessionId) {
         await setActive!({ session: createdSessionId });
-      } else {
-        Alert.alert(
-          "تنبيه",
-          "لم يتم اكتمال عملية تسجيل الدخول، هل تريد المحاولة مرة أخرى؟",
-          [
-            {
-              text: "إلغاء",
-              style: "cancel"
-            },
-            {
-              text: "محاولة مرة أخرى",
-              onPress: () => handelAppleLogin()
-            }
-          ]
-        );
-      }
+      } 
     } catch (err: any) {
       console.error("Login error:", err);
       Alert.alert(

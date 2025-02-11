@@ -5,8 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useUser } from "@clerk/clerk-react";
 
 export default function Layout() {
-  const { user } = useUser();
-  const isAdmin = user?.emailAddresses[0]?.emailAddress === process.env.EXPO_PUBLIC_ADMIN_EMAIL;
+
   return (
     <Stack
       screenOptions={{ contentStyle: { backgroundColor: 'white' }, headerShadowVisible: false }}>

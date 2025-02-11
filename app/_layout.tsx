@@ -21,19 +21,19 @@ if (!publishableKey) {
 
 
 const InitialLayout = () => {
-  const { isLoaded, isSignedIn } = useAuth();
-  const router = useRouter();
-  const segments = useSegments();
+  // const { isLoaded, isSignedIn } = useAuth();
+  // const router = useRouter();
+  // const segments = useSegments();
 
-  useEffect(() => {
-    if (!isLoaded) return;
-    const isAuthGroup = segments[0] === '(auth)';
-    if (isSignedIn && !isAuthGroup) {
-        router.replace('/(auth)/(tabs)');
-      } else{
-        router.replace('/(public)/sign-in');
-      }
-  }, [isSignedIn]);
+  // useEffect(() => {
+  //   if (!isLoaded) return;
+  //   const isAuthGroup = segments[0] === '(auth)';
+  //   if (isSignedIn && !isAuthGroup) {
+  //       router.replace('/(auth)/(tabs)');
+  //     } else{
+  //       router.replace('/(public)/sign-in');
+  //     }
+  // }, [isSignedIn]);
 
   return <Slot />
 };
